@@ -1,0 +1,45 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS list;
+DROP TABLE IF EXISTS inventory;
+DROP TABLE IF EXISTS sell;
+
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  email TEXT NOT NULL
+);
+
+CREATE TABLE list (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  product_code TEXT NOT NULL,
+  product_barcode TEXT NOT NULL,
+  product_name TEXT NOT NULL,
+  product_generic TEXT NOT NULL,
+  product_type TEXT NOT NULL
+  cost REAL NOT NULL,
+  price REAL NOT NULL,
+  manufacturer TEXT NOT NULL
+);
+
+CREATE TABLE inventory (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  employee_id INTEGER NOT NULL,
+  product_id INTEGER NOT NULL,
+  deposit TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  amount INTEGER NOT NULL,
+  lot_no TEXT NOT NULL,
+  expire DATE NOT NULL,
+  FOREIGN KEY (employee_id) REFERENCES user (id),
+  FOREIGN KEY (product_id) REFERENCES list (id)
+)
+
+CREATE TABLE sell (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  employee_id INTEGER NOT NULL,
+  product_id INTEGER NOT NULL,
+  sell TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  amount INTEGER NOT NULL,
+  FOREIGN KEY (employee_id) REFERENCES user (id),
+  FOREIGN KEY (product_id) REFERENCES list (id)
+)
